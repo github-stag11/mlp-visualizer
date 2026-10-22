@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import * as tf from "@tensorflow/tfjs";
 import { useMLPStore } from "../stores/useMLPStore";
 
@@ -34,16 +34,17 @@ const extractLayers = (model: tf.LayersModel): LayerParams[] => {
 
 export const ModelParametersPanel: React.FC = () => {
   const model = useMLPStore((s) => s.model);
-  const historyLength = useMLPStore((s) => s.trainingHistory.epochs.length);
+  const training = useMLPStore((s) => s.training);
+  const [layers, setLayers] = useState<LayerParams[]>([]);
 
-  const layers = useMemo(
-    () => (model ? extractLayers(model) : []),
-    // historyLength: les poids changent pendant l'entraînement
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [model, historyLength],
-  );
+  // Weights only change during training, so refresh once it has finished.
+  useEffect(() => {
+    if (model && !training) setLayers(extractLayers(model));
+  }, [model, training]);
 
-  const totalParams = model ? model.countParams() : 0;
+  if (!model) return null;
+
+  const totalParams = model.countParams();
 
   return (
     <div className="flex w-full flex-col gap-2 bg-white p-2">
