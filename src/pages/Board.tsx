@@ -8,29 +8,29 @@ import { TrainingPanel } from "../components/TrainingPanel";
 
 export default function Board() {
   return (
-    <div className="h-[40em] flex flex-col">
+    <div className="flex h-[40em] flex-col">
       <div className="flex flex-1">
         {/* Left Column */}
-        <div className="w-[20em] flex flex-col ">
+        <div className="flex w-[20em] flex-col">
           <ModelStoragePanel />
           <ModelConfigurator />
         </div>
 
         {/* Center Column */}
-        <div className="flex-grow flex flex-col">
+        <div className="flex flex-grow flex-col">
           <div className="flex justify-start">
             <CanvasInput />
-            <div className="flex-grow h-full">
+            <div className="h-full flex-grow">
               <PredictPanel />
             </div>
           </div>
-          <div className="flex-grow ">
+          <div className="flex-grow">
             <MLPGraph />
           </div>
         </div>
 
         {/* Right Column */}
-        <div className="w-[20em] flex flex-col">
+        <div className="flex w-[20em] flex-col">
           <TrainingPanel />
           <TrainingChart />
         </div>
